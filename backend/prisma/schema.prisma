@@ -1,0 +1,47 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [uuidOssp(map: "uuid-ossp")]
+}
+
+model Customer {
+  id              String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name            String
+  customer_number String    @db.VarChar
+  install_number  String    @unique
+  invoices        Invoice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("customer")
+}
+
+model Invoice {
+  id             String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  customer       Customer @relation(fields: [customer_id], references: [id])
+  customer_id    String   @db.Uuid
+  reference      String
+  reference_date DateTime @db.Date
+  due_date       DateTime @db.Date
+  ee_kwh         Float //Energia Elétrica
+  ee_value       Float //Energia Elétrica
+  scee_kwh       Float //Energia SCEEE s/ICMS
+  scee_value     Float //Energia SCEEE s/ICMS
+  gdi_kwh        Float //Energia Compensada GD I
+  gdi_value      Float //Energia Compensada GD I
+  cipm           Float //Contrib Ilum Publica Municipal
+  value          Float
+  barcode        String   @unique
+  file           String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("invoice")
+}
