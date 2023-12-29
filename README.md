@@ -20,7 +20,7 @@ Após isso, execute o comando a baixo para rodar as migrations
 npx prisma migrate deploy
 ```
 
-Adicione as faturas a pasta 'invoices' e em seguida execute o seguinte comando para fazer o parse das faturas para o banco
+Crie uma pasta na raiz chamada 'invoices', adicione as faturas a pasta 'invoices' e em seguida execute o seguinte comando para fazer o parse das faturas para o banco
 
 ```
 yarn parse:invoices
